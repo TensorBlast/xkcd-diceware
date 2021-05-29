@@ -1,0 +1,34 @@
+use std::{
+    fs::File,
+    io::{self, BufRead, BufReader},
+    path::Path,
+    collections::HashMap,
+};
+
+
+fn lines_from_file(filename: impl AsRef<Path>) -> io::Result<Vec<String>> {
+    BufReader::new(File::open(filename)?).lines().collect()
+}
+
+fn print_type_of<T>(_: &T) {
+    println!("{}", std::any::type_name::<T>())
+}
+
+fn main() {
+    let lines = lines_from_file("./assets/eff_large_wordlist.txt").expect("Didn't load file");
+
+    let mut map = HashMap::new();
+    for line in lines {
+
+
+        let iterator: Vec<&str> = line.split_whitespace().collect();
+        let number = iterator[0];
+        let word = iterator[1];
+        map.insert(String::from(number), String::from(word));
+        // print_type_of(&line.split_whitespace());
+    }
+
+    for (key,value) in &map {
+        println!("{}: {}",key,value );
+    }
+}
